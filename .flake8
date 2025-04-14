@@ -1,4 +1,4 @@
 [flake8]
 max-line-length = 88
-exclude = .tox,*.egg*,src/,**/migrations/*,build
+exclude = .tox,*.egg*,src/,**/migrations/*,build,.venv
 ignore = W503

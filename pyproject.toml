@@ -7,7 +7,7 @@ name = "django-graphql-jwt"
 description = "JSON Web Token for Django GraphQL."
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.6"
+requires-python = ">=3.12"
 dynamic = ["version"]
 authors = [
   { name = "Dani", email = "dani@domake.io" }
@@ -30,6 +30,8 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Framework :: Django",
     "Framework :: Django :: 2.0",
     "Framework :: Django :: 2.1",
@@ -95,12 +97,13 @@ extend-exclude = '''
 /(
   | .htmlcov
   | dist
+  | .venv
 )/
 '''
 
 [tool.isort]
 profile = "black"
-skip = "migrations"
+skip = ["migrations", ".venv"]
 default_section = "THIRDPARTY"
 known_django = "django"
 known_first_party = "graphql_jwt"

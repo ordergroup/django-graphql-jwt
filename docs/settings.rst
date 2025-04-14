@@ -133,7 +133,7 @@ Token expiration
 JWT_EXPIRATION_DELTA
 ~~~~~~~~~~~~~~~~~~~~
 
-  Timedelta added to *utcnow()* to set the expiration time
+  Timedelta added to *datetime.now()* to set the expiration time
 
   Default: ``timedelta(minutes=5)``
 

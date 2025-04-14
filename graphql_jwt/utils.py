@@ -1,5 +1,5 @@
 from calendar import timegm
-from datetime import datetime
+from datetime import datetime, timezone
 
 import django
 from django.contrib.auth import get_user_model
@@ -17,7 +17,7 @@ def jwt_payload(user, context=None):
     if hasattr(username, "pk"):
         username = username.pk
 
-    exp = datetime.utcnow() + jwt_settings.JWT_EXPIRATION_DELTA
+    exp = datetime.now(timezone.utc) + jwt_settings.JWT_EXPIRATION_DELTA
 
     payload = {
         user.USERNAME_FIELD: username,
@@ -25,7 +25,7 @@ def jwt_payload(user, context=None):
     }
 
     if jwt_settings.JWT_ALLOW_REFRESH:
-        payload["origIat"] = timegm(datetime.utcnow().utctimetuple())
+        payload["origIat"] = timegm(datetime.now(timezone.utc).utctimetuple())
 
     if jwt_settings.JWT_AUDIENCE is not None:
         payload["aud"] = jwt_settings.JWT_AUDIENCE
@@ -119,7 +119,7 @@ def get_user_by_payload(payload):
 
 def refresh_has_expired(orig_iat, context=None):
     exp = orig_iat + jwt_settings.JWT_REFRESH_EXPIRATION_DELTA.total_seconds()
-    return timegm(datetime.utcnow().utctimetuple()) > exp
+    return timegm(datetime.now(timezone.utc).utctimetuple()) > exp
 
 
 def set_cookie(response, key, value, expires):

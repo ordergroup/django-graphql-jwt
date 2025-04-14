@@ -55,9 +55,10 @@ class RefreshTokenMixin:
 
 class RefreshMixin(RefreshTokenMutationMixin, RefreshTokenMixin):
     def test_refresh_token(self):
-        with catch_signal(
-            refresh_token_rotated
-        ) as refresh_token_rotated_handler, back_to_the_future(seconds=1):
+        with (
+            catch_signal(refresh_token_rotated) as refresh_token_rotated_handler,
+            back_to_the_future(seconds=1),
+        ):
             response = self.execute(
                 {
                     "refreshToken": self.refresh_token.token,
@@ -82,9 +83,10 @@ class RefreshMixin(RefreshTokenMutationMixin, RefreshTokenMixin):
 
     @override_jwt_settings(JWT_REUSE_REFRESH_TOKENS=True)
     def test_reuse_refresh_token(self):
-        with catch_signal(
-            refresh_token_rotated
-        ) as refresh_token_rotated_handler, back_to_the_future(seconds=1):
+        with (
+            catch_signal(refresh_token_rotated) as refresh_token_rotated_handler,
+            back_to_the_future(seconds=1),
+        ):
             response = self.execute(
                 {
                     "refreshToken": self.refresh_token.token,
@@ -162,9 +164,10 @@ class CookieRefreshMixin(RefreshTokenMutationMixin):
     def test_refresh_token(self):
         self.set_refresh_token_cookie()
 
-        with catch_signal(
-            refresh_token_rotated
-        ) as refresh_token_rotated_handler, back_to_the_future(seconds=1):
+        with (
+            catch_signal(refresh_token_rotated) as refresh_token_rotated_handler,
+            back_to_the_future(seconds=1),
+        ):
             response = self.execute()
 
         data = response.data["refreshToken"]

@@ -1,5 +1,5 @@
 from calendar import timegm
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import wraps
 
 from django.contrib.auth import authenticate, get_user_model
@@ -119,7 +119,7 @@ def refresh_expiration(f):
     def wrapper(cls, *args, **kwargs):
         def on_resolve(payload):
             payload.refresh_expires_in = (
-                timegm(datetime.utcnow().utctimetuple())
+                timegm(datetime.now(timezone.utc).utctimetuple())
                 + jwt_settings.JWT_REFRESH_EXPIRATION_DELTA.total_seconds()
             )
             return payload
@@ -161,7 +161,7 @@ def jwt_cookie(view_func):
         response = view_func(request, *args, **kwargs)
 
         if hasattr(request, "jwt_token"):
-            expires = datetime.utcnow() + jwt_settings.JWT_EXPIRATION_DELTA
+            expires = datetime.now(timezone.utc) + jwt_settings.JWT_EXPIRATION_DELTA
 
             set_cookie(
                 response,
